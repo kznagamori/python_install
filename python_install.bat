@@ -2,9 +2,23 @@
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 @REM ===========================================================================
-@REM 使用するPythonのバージョンを指定
+@REM 使用するPythonのバージョンを選択
 @REM ===========================================================================
-SET PYTHON_VERSION=3.10.11
+ECHO 1: 3.9.13
+ECHO 2: 3.10.11
+ECHO 3: 3.11.9
+ECHO 4: 3.12.3
+SET /P VERSION_CHOICE="バージョンを選択してください。(1-4) : "
+
+IF "%VERSION_CHOICE%"=="1" SET PYTHON_VERSION=3.9.13
+IF "%VERSION_CHOICE%"=="2" SET PYTHON_VERSION=3.10.11
+IF "%VERSION_CHOICE%"=="3" SET PYTHON_VERSION=3.11.9
+IF "%VERSION_CHOICE%"=="4" SET PYTHON_VERSION=3.12.3
+
+IF NOT DEFINED PYTHON_VERSION (
+    ECHO 不正な選択です。スクリプトを終了します。
+    GOTO :END
+)
 
 
 @REM ===========================================================================
@@ -175,9 +189,9 @@ ECHO VENV 環境を作成します。
 
 %PYTHON_EXE% -m venv %VENV_DIR% --without-pip
 CALL %VENV_DIR%\Scripts\activate.bat
-python -m ensurepip --upgrade
+python -m ensurepip --upgrade --default-pip
 python -m pip install --upgrade pip
 
 ECHO 以後 Python %PYTHON_VERSION% を使用する場合は、"%VENV_DIR%\Scripts\activate" を実行してください。
-ECHO Python %PYTHON_VERSION% をインストールしました。
+ECHO "%INSTALL_DIR%" に Python %PYTHON_VERSION% をインストールしました。
 :END_INSTALL_PYTHON
